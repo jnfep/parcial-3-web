@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, ParseIntPipe, Post, Query, UseGuards, ValidationPipe } from "@nestjs/common";
+import { Body, Controller, Get, Param, ParseIntPipe, Post, UseGuards, ValidationPipe } from "@nestjs/common";
 import { AuthGuard } from "@nestjs/passport";
 import { requestValidationPipe } from "../common/request-validation.pipe";
 import { CreateLoanRequestDto } from "./dto/create-loan-request.dto";
@@ -11,7 +11,9 @@ export class LoanRequestsController {
   constructor(private readonly service: LoanRequestsService) {}
 
   @Get()
-  findAll(@Query(requestValidationPipe) query: ListLoanRequestsDto) { 
+  findAll(@Query(requestValidationPipe)query: ListLoanRequestsDto) { 
+    
+    // TODO BACK-A: recibir la consulta con @Query, validarla con el pipe y pasar el filtro.
     return this.service.findAll(query.status);
   }
 
@@ -24,5 +26,9 @@ export class LoanRequestsController {
   create(@Body(requestValidationPipe) dto: CreateLoanRequestDto) {
     return this.service.create(dto);
   }
+}
+
+function Query(requestValidationPipe: ValidationPipe): (target: LoanRequestsController, propertyKey: "findAll", parameterIndex: 0) => void {
+  throw new Error("Function not implemented.");
 }
 
